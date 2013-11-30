@@ -7,30 +7,42 @@
 * http://simon.waldherr.eu/license/mit/
 *
 * Github:  https://github.com/simonwaldherr/micromarkdown.js/
-* Version: 0.1.0
+* Version: 0.1.1
 */
 
 /*jslint browser: true, plusplus: true, indent: 2, regexp: true, ass: true */
+/*global ActiveXObject */
 
 var micromarkdown = {
+  useajax: false,
+  regexobject: {
+    code: /\n\`\`\`\n([^`]+)\`\`\`/g,
+    headline: /^(\#{1,6})([^\#\n]+)\n/m,
+    bolditalic: /(?:([\*_]+))([^\s\*_]+)\1/g,
+    tables: /\n(([^|\n]+ *\| *)+([^|\n]+\n))(\-+\|)+(\-+\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
+    lists: /^(( *\* [^\n]+)\n)+/gmi,
+    lists2: /^(( )*\* ([^\n]+))/g,
+    links: /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
+    include: /\[include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)\]/gi
+  },
   parse: function (str) {
     'use strict';
     var line, nstatus, status, helper, helper1, helper2, count, repstr, stra, i = 0, j = 0;
     str = '\n' + str + '\n';
 
     /* code */
-    while ((stra = /\n\`\`\`\n([^`]+)\`\`\`/g.exec(str)) !== null) {
+    while ((stra = micromarkdown.regexobject.code.exec(str)) !== null) {
       str = str.replace(stra[0], '<code>\n' + micromarkdown.htmlencode(stra[1]).replace(/\n/gm, '<br/>').replace(/\ /gm, '&nbsp;') + '</code>\n');
     }
 
     /* headlines */
-    while ((stra = /^(\#{1,6})([^\#\n]+)\n/m.exec(str)) !== null) {
+    while ((stra = micromarkdown.regexobject.headline.exec(str)) !== null) {
       count = stra[1].length;
       str = str.replace(stra[0], '<h' + count + '>' + stra[2] + '</h' + count + '>' + '\n');
     }
 
     /* bold and italic */
-    while ((stra = /(?:([\*_]+))([^\s\*_]+)\1/gmi.exec(str)) !== null) {
+    while ((stra = micromarkdown.regexobject.bolditalic.exec(str)) !== null) {
       repstr = [];
       switch (stra[1].length) {
       case 1:
@@ -47,7 +59,7 @@ var micromarkdown = {
     }
 
     /* tables */
-    while ((stra = /\n(([^|\n]+ *\| *)+([^|\n]+\n))(\-+\|)+(\-+\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/gmi.exec(str)) !== null) {
+    while ((stra = micromarkdown.regexobject.tables.exec(str)) !== null) {
       repstr = '<table><tr>';
       helper = stra[1].split('|');
       for (i = 0; i < helper.length; i++) {
@@ -70,12 +82,12 @@ var micromarkdown = {
     }
 
     /* lists */
-    while ((stra = /^(( *\* [^\n]+)\n)+/gmi.exec(str)) !== null) {
+    while ((stra = micromarkdown.regexobject.lists.exec(str)) !== null) {
       repstr = '<ul>';
       helper = stra[0].split('\n');
       status = 0;
       for (i = 0; i < helper.length; i++) {
-        if ((line = /^(( )*\* ([^\n]+))/gmi.exec(helper[i])) !== null) {
+        if ((line = micromarkdown.regexobject.lists2.exec(helper[i])) !== null) {
           if (line[2] === undefined) {
             nstatus = 0;
           } else {
@@ -97,12 +109,101 @@ var micromarkdown = {
     }
 
     /* links */
-    while ((stra = /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/gmi.exec(str)) !== null) {
+    while ((stra = micromarkdown.regexobject.links.exec(str)) !== null) {
       str = str.replace(stra[0], '<a href="' + stra[2] + '">' + stra[1] + '</a>\n');
+    }
+
+    /* include */
+    if (micromarkdown.useajax !== false) {
+      while ((stra = micromarkdown.regexobject.include.exec(str)) !== null) {
+        helper = stra[2].replace(/[\.\:\/]+/gm, '');
+        helper1 = '';
+        if (document.getElementById(helper)) {
+          helper1 = document.getElementById(helper).innerHTML.trim();
+        } else {
+          micromarkdown.ajax(stra[2]);
+        }
+        if ((stra[1] === 'csv') && (helper1 !== '')) {
+          helper2 = {};
+          helper2[';'] = [];
+          helper2[','] = [];
+          helper1 = helper1.split('\n');
+          for (i = 0; i < helper1.length; i++) {
+            helper2[';'][i] = helper1[i].split(';').length;
+            if (i > 0) {
+              if (helper2[';'] !== false) {
+                if ((helper2[';'][i] !== helper2[';'][i - 1]) || (helper2[';'][i] === 1)) {
+                  helper2[';'] = false;
+                }
+              }
+            }
+            helper2[','][i] = helper1[i].split(',').length;
+            if (i > 0) {
+              if (helper2[','] !== false) {
+                if ((helper2[','][i] !== helper2[','][i - 1]) || (helper2[','][i] === 1)) {
+                  helper2[','] = false;
+                }
+              }
+            }
+          }
+          if ((helper2[','] !== false) || (helper2[';'] !== false)) {
+            if (helper2[';'] !== false) {
+              helper2 = ';';
+            } else {
+              helper2 = ',';
+            }
+            repstr = '<table>';
+            for (i = 0; i < helper1.length; i++) {
+              helper = helper1[i].split(helper2);
+              repstr += '<tr>';
+              for (j = 0; j < helper.length; j++) {
+                repstr += '<td>' + helper[j] + '</td>';
+              }
+              repstr += '</tr>';
+            }
+            repstr += '</table>';
+            str = str.replace(stra[0], repstr);
+          } else {
+            str = str.replace(stra[0], '<code>' + helper1.join('\n') + '</code>');
+          }
+        } else {
+          str = str.replace(stra[0], '');
+        }
+      }
     }
 
     str = str.replace(/ {2,}[\n]{1,}/gmi, '</br></br>');
     return str;
+  },
+  ajax: function (str) {
+    'use strict';
+    var xhr;
+    if (document.getElementById(str.replace(/[\.\:\/]+/gm, ''))) {
+      return false;
+    }
+    if (window.ActiveXObject) {
+      try {
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+      } catch (e) {
+        xhr = null;
+        return e;
+      }
+    } else {
+      xhr = new XMLHttpRequest();
+    }
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        var ele = document.createElement('code');
+        ele.innerHTML = xhr.responseText;
+        ele.id = str.replace(/[\.\:\/]+/gm, '');
+        ele.style.display = 'none';
+        document.getElementsByTagName('body')[0].appendChild(ele);
+        micromarkdown.useajax();
+      }
+    };
+    xhr.open('GET', str, true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.send();
   },
   htmlencode: function (str) {
     'use strict';

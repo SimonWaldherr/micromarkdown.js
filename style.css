@@ -29,12 +29,15 @@ textarea {
   outline: none;
 }
 table {
-    border-collapse: collapse;
-    border-style: hidden;
+  border-collapse: collapse;
+  border-style: hidden;
 }
 
 table td, table th {
-    border: 1px solid black;
+  border: 1px solid black;
+}
+code {
+  display: block;
 }
 #htmlexport table td, #htmlexport table th {
   border-color: #aaa;

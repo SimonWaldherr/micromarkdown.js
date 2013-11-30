@@ -18,6 +18,9 @@
     window.onload = function() {
       input = document.getElementById('defaultmd').innerHTML;
       document.getElementById('md').value = input;
+      micromarkdown.useajax = function() {
+        parseMD();
+      };
       parseMD();
     }
   </script>
@@ -57,8 +60,12 @@ sit  | amet   | sed
 do   | eiusom | tempor 
 
 ```
-var html = micromarkdown.parse(document.getElementById("md").value);
+var md   = document.getElementById("md").value,
+    html = micromarkdown.parse(md);
 ```
+
+[include csv from http://cdn.simon.waldherr.eu/projects/majaX/content/data.csv]
+
 </code>
 <script type="text/javascript">
   var _gaq = _gaq || [];
