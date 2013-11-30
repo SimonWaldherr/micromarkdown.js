@@ -1,0 +1,78 @@
+html, body {
+  height: 100%; margin: 0px; padding: 0px;
+}
+
+body, h1, h2, h3, h4, h5, td, table, a, p, th, b, tr, li {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-weight: 100 !important;
+}
+table {
+  width: 100%;
+  min-height: 100%;
+}
+b, th {
+  font-weight: 300 !important;
+}
+td, th {
+  padding: 25px;
+}
+th {
+  height: 30px;
+}
+textarea {
+  font-family: monospace;
+  font-size: 15px;
+  outline: none;
+  border: 0px solid #ffffff;
+  overflow: auto;
+  resize: none;
+  outline: none;
+}
+table {
+    border-collapse: collapse;
+    border-style: hidden;
+}
+
+table td, table th {
+    border: 1px solid black;
+}
+#htmlexport table td, #htmlexport table th {
+  border-color: #aaa;
+}
+#htmlexport td, #htmlexport th {
+  padding: 5px;
+}
+#htmlexport table, #htmlexport code {
+  margin-bottom: 20px;
+}
+#markdown, #htmlexport {
+  vertical-align: top;
+  width: 50%;
+  min-width: 30%;
+}
+#md {
+  width: 100%;
+  height: 100%;
+}
+#html {
+  position: absolute;
+  top: 81px;
+  right: 30px;
+  height: 23px;
+  background: #eee;
+}
+#html label {
+  font-weight: 200;
+  font-size: large;
+}
+#defaultmd {
+  visibility: hidden;
+  display: none;
+}
+input[type=checkbox], label {
+  height: 10px;
+  display: inline-block;
+  line-height: 10px;
+  vertical-align: middle;
+  cursor: pointer;
+}

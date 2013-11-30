@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>micromarkdown.js</title>
+  <link href="./style.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="./micromarkdown.js"></script>
+  <!--<script type="text/javascript" src="./dist/micromarkdown.min.js"></script>-->
+  <script>
+    function parseMD() {
+      if (document.getElementById('htmlcb').checked !== false) {
+        document.getElementById('htmlexport').innerHTML = micromarkdown.htmlencode(micromarkdown.parse(document.getElementById('md').value));
+      } else {
+        document.getElementById('htmlexport').innerHTML = micromarkdown.parse(document.getElementById('md').value)
+      }
+    }
+
+    window.onload = function() {
+      input = document.getElementById('defaultmd').innerHTML;
+      document.getElementById('md').value = input;
+      parseMD();
+    }
+  </script>
+</head>
+<body>
+  <div id="html">
+    <input name="htmlcb" id="htmlcb" type="checkbox" onchange="javascript:parseMD();"><label for="htmlcb">&#8249;/&#8250;</label>
+  </div>
+  <table id="table">
+    <tr>
+      <th>markdown</th><th>preview</th>
+    </tr>
+    <tr>
+      <td id="markdown"><textarea id="md" onkeyup="javascript:parseMD();"></textarea></td>
+      <td id="htmlexport"></td>
+    </tr>
+  </table>
+  <code id="defaultmd">
+#header
+##header 2
+
+* this
+* is a
+* list
+
+[link to google](http://google.de)  
+
+*italic* lorem **bold**  
+ipsum _italic_ __bold__  
+
+
+this | is a   | table  
+-----|--------|--------
+with | sample | content
+lorem| ipsum  | dolor  
+sit  | amet   | sed    
+do   | eiusom | tempor 
+
+```
+var html = micromarkdown.parse(document.getElementById("md").value);
+```
+</code>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33526676-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</body>
+</html>
