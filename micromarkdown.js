@@ -7,7 +7,7 @@
 * http://simon.waldherr.eu/license/mit/
 *
 * Github:  https://github.com/simonwaldherr/micromarkdown.js/
-* Version: 0.1.1
+* Version: 0.1.2
 */
 
 /*jslint browser: true, plusplus: true, indent: 2, regexp: true, ass: true */
@@ -16,14 +16,14 @@
 var micromarkdown = {
   useajax: false,
   regexobject: {
-    code: /\n\`\`\`\n([^`]+)\`\`\`/g,
-    headline: /^(\#{1,6})([^\#\n]+)\n/m,
-    bolditalic: /(?:([\*_]+))([^\s\*_]+)\1/g,
-    tables: /\n(([^|\n]+ *\| *)+([^|\n]+\n))(\-+\|)+(\-+\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
-    lists: /^(( *\* [^\n]+)\n)+/gmi,
-    lists2: /^(( )*\* ([^\n]+))/g,
-    links: /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
-    include: /\[include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)\]/gi
+    hr:         /(?:[\*\-_]+) ?\1/gm,
+    lists:      /^(( *\* [^\n]+)\n)+/gm,
+    headline:   /^(\#{1,6})([^\#\n]+)\n/m,
+    code:       /\n\`\`\`\n?([^`]+)\`\`\`/g,
+    bolditalic: /(?:([\*_~]{1,3}))([^\*_~\n]+)\1/g,
+    links:      /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
+    tables:     /\n(([^|\n]+ *\| *)+([^|\n]+\n))(\-+\|)+(\-+\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
+    include:    /[\[<]include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)[\]>]/gi
   },
   parse: function (str) {
     'use strict';
@@ -41,21 +41,58 @@ var micromarkdown = {
       str = str.replace(stra[0], '<h' + count + '>' + stra[2] + '</h' + count + '>' + '\n');
     }
 
+    /* horizontal line */
+    while ((stra = micromarkdown.regexobject.hr.exec(str)) !== null) {
+      console.log(stra);
+      str = str.replace(stra[0], '<hr/>' + '\n');
+    }
+
+    /* lists */
+    while ((stra = micromarkdown.regexobject.lists.exec(str)) !== null) {
+      repstr = '<ul>';
+      helper = stra[0].split('\n');
+      status = 0;
+      for (i = 0; i < helper.length; i++) {
+        if ((line = /^(( )*\* ([^\n]+))/.exec(helper[i])) !== null) {
+          if (line[2] === undefined) {
+            nstatus = 0;
+          } else {
+            nstatus = line[2].length;
+          }
+          if (status > nstatus) {
+            repstr += '<ul>';
+            status = nstatus;
+          }
+          repstr += '<li>' + line[3] + '</li>' + '\n';
+          if (status < nstatus) {
+            repstr += '</ul>';
+            status = nstatus;
+          }
+        }
+      }
+      repstr += '</ul>';
+      str = str.replace(stra[0], repstr + '\n');
+    }
+
     /* bold and italic */
     while ((stra = micromarkdown.regexobject.bolditalic.exec(str)) !== null) {
       repstr = [];
-      switch (stra[1].length) {
-      case 1:
-        repstr = ['<i>', '</i>\n'];
-        break;
-      case 2:
-        repstr = ['<b>', '</b>\n'];
-        break;
-      case 3:
-        repstr = ['<i><b>', '</b></i>\n'];
-        break;
+      if (stra[1] === '~~') {
+        str = str.replace(stra[0], '<del>' + stra[2] + '</del>');
+      } else {
+        switch (stra[1].length) {
+        case 1:
+          repstr = ['<i>', '</i>\n'];
+          break;
+        case 2:
+          repstr = ['<b>', '</b>\n'];
+          break;
+        case 3:
+          repstr = ['<i><b>', '</b></i>\n'];
+          break;
+        }
+        str = str.replace(stra[0], repstr[0] + stra[2] + repstr[1]);
       }
-      str = str.replace(stra[0], repstr[0] + stra[2] + repstr[1]);
     }
 
     /* tables */
@@ -81,36 +118,13 @@ var micromarkdown = {
       str = str.replace(stra[0], repstr);
     }
 
-    /* lists */
-    while ((stra = micromarkdown.regexobject.lists.exec(str)) !== null) {
-      repstr = '<ul>';
-      helper = stra[0].split('\n');
-      status = 0;
-      for (i = 0; i < helper.length; i++) {
-        if ((line = micromarkdown.regexobject.lists2.exec(helper[i])) !== null) {
-          if (line[2] === undefined) {
-            nstatus = 0;
-          } else {
-            nstatus = line[2].length;
-          }
-          if (status > nstatus) {
-            repstr += '<ul>';
-            status = nstatus;
-          }
-          repstr += '<li>' + line[3] + '</li>' + '\n';
-          if (status < nstatus) {
-            repstr += '</ul>';
-            status = nstatus;
-          }
-        }
-      }
-      repstr += '</ul>';
-      str = str.replace(stra[0], repstr + '\n');
-    }
-
     /* links */
     while ((stra = micromarkdown.regexobject.links.exec(str)) !== null) {
-      str = str.replace(stra[0], '<a href="' + stra[2] + '">' + stra[1] + '</a>\n');
+      if (stra[0].substr(0, 1) === '!') {
+        str = str.replace(stra[0], '<img src="' + stra[2] + '" alt="' + stra[1] + '" title="' + stra[1] + '" />\n');
+      } else {
+        str = str.replace(stra[0], '<a href="' + stra[2] + '">' + stra[1] + '</a>\n');
+      }
     }
 
     /* include */

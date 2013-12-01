@@ -16,7 +16,7 @@
     }
 
     window.onload = function() {
-      input = document.getElementById('defaultmd').innerHTML;
+      input = document.getElementById('defaultmd').innerHTML.split('<!--')[1].split('-->')[0];
       document.getElementById('md').value = input;
       micromarkdown.useajax = function() {
         parseMD();
@@ -39,6 +39,7 @@
     </tr>
   </table>
   <code id="defaultmd">
+<!--
 #header
 ##header 2
 
@@ -47,10 +48,12 @@
 * list
 
 [link to google](http://google.de)  
+<http://simonwaldherr.de/>
 
 *italic* lorem **bold**  
 ipsum _italic_ __bold__  
-
+*lorem ipsum* **dolor sit**  
+This is some ~~strike through text~~ you might want  
 
 this | is a   | table  
 -----|--------|--------
@@ -64,8 +67,12 @@ var md   = document.getElementById("md").value,
     html = micromarkdown.parse(md);
 ```
 
-[include csv from http://cdn.simon.waldherr.eu/projects/majaX/content/data.csv]
+<include csv from http://cdn.simon.waldherr.eu/projects/majaX/content/data.csv>
 
+
+![me](https://1.gravatar.com/avatar/c722b17a21e301d3845be2b438b0aeea?d=https%3A%2F%2Fidenticons.github.com%2Fa095c96046b521a091e044f31c7eb1df.png&r=x&s=140)
+
+-->
 </code>
 <script type="text/javascript">
   var _gaq = _gaq || [];
