@@ -10,7 +10,7 @@
     function parseMD() {
       if (document.getElementById('htmlcb').checked !== false) {
         document.getElementById('htmlexport').className = 'source';
-        document.getElementById('htmlexport').innerHTML = micromarkdown.htmlencode(micromarkdown.parse(document.getElementById('md').value));
+        document.getElementById('htmlexport').innerHTML = micromarkdown.htmlEncode(micromarkdown.parse(document.getElementById('md').value));
       } else {
         document.getElementById('htmlexport').className = 'preview';
         document.getElementById('htmlexport').innerHTML = micromarkdown.parse(document.getElementById('md').value)
@@ -28,6 +28,9 @@
   </script>
 </head>
 <body>
+  <a class="ribbon" href="https://github.com/SimonWaldherr/micromarkdown.js" target="_blank">
+    <img alt="Fork micromarkdown.js on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png">
+  </a>
   <div id="html">
     <input name="htmlcb" id="htmlcb" type="checkbox" onchange="javascript:parseMD();"><label for="htmlcb">&#8249;/&#8250;</label>
   </div>
@@ -42,6 +45,8 @@
   </table>
   <code id="defaultmd">
 <!--
+![µmd.js](http://simonwaldherr.de/umd.png)
+
 #header
 ##header 2
 
@@ -49,13 +54,22 @@
 * is a
 * list
 
-[link to google](http://google.de)  
-<http://simonwaldherr.de/>  
+1. test
+2. this
+3. sorted
+4. list
+
+---
+
+[link to my GitHub Account](https://github.com/SimonWaldherr/)  
+<https://github.com/SimonWaldherr/micromarkdown.js>  
 
 *italic* lorem **bold**  
 ipsum _italic_ __bold__  
 *lorem ipsum* **dolor sit**  
-This is some ~~strike through text~~ you might want  
+The ```<del>``` tag defines text that has been ~~removed~~ deleted from a document.  
+
+---
 
 this | is a   | table  
 -----|--------|--------
@@ -67,12 +81,13 @@ do   | eiusom | tempor
 ```
 var md   = document.getElementById("md").value,
     html = micromarkdown.parse(md);
+
 ```
 
 <include csv from http://cdn.simon.waldherr.eu/projects/majaX/content/data.csv>
 
-
-![me](https://1.gravatar.com/avatar/c722b17a21e301d3845be2b438b0aeea?d=https%3A%2F%2Fidenticons.github.com%2Fa095c96046b521a091e044f31c7eb1df.png&r=x&s=140)
+---
+<span style="position:absolute;right:25px;">micromarkdown.js</span>
 
 -->
 </code>

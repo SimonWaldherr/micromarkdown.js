@@ -7,7 +7,7 @@
 * http://simon.waldherr.eu/license/mit/
 *
 * Github:  https://github.com/simonwaldherr/micromarkdown.js/
-* Version: 0.1.3
+* Version: 0.1.4
 */
 
 /*jslint browser: true, plusplus: true, indent: 2, regexp: true, ass: true */
@@ -16,16 +16,16 @@
 var micromarkdown = {
   useajax: false,
   regexobject: {
-    lists:      /^(( *\* [^\n]+)\n)+/gm,
     headline:   /^(\#{1,6})([^\#\n]+)\n/m,
-    code:       /\n\`\`\`\n?([^`]+)\`\`\`/g,
+    code:       /\s\`\`\`\n?([^`]+)\`\`\`/g,
     hr:         /\n(?:([\*\-_] ?)+)\1\1\n/gm,
+    lists:      /^(( *(\*|\d\.) [^\n]+)\n)+/gm,
     bolditalic: /(?:([\*_~]{1,3}))([^\*_~\n]+)\1/g,
     links:      /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
     mail:       /<(([a-z0-9_\-\.])+\@([a-z0-9_\-\.])+\.([a-z]{2,7}))>/gmi,
     tables:     /\n(([^|\n]+ *\| *)+([^|\n]+\n))(\-+\|)+(\-+\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
-    url:        /<([a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[\-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)>/g,
-    include:    /[\[<]include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)[\]>]/gi
+    include:    /[\[<]include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)[\]>]/gi,
+    url:        /<([a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[\-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)>/g
   },
   parse: function (str) {
     'use strict';
@@ -34,7 +34,7 @@ var micromarkdown = {
 
     /* code */
     while ((stra = micromarkdown.regexobject.code.exec(str)) !== null) {
-      str = str.replace(stra[0], '<code>\n' + micromarkdown.htmlencode(stra[1]).replace(/\n/gm, '<br/>').replace(/\ /gm, '&nbsp;') + '</code>\n');
+      str = str.replace(stra[0], '<code>\n' + micromarkdown.htmlEncode(stra[1]).replace(/\n/gm, '<br/>').replace(/\ /gm, '&nbsp;') + '</code>\n');
     }
 
     /* headlines */
@@ -50,11 +50,15 @@ var micromarkdown = {
 
     /* lists */
     while ((stra = micromarkdown.regexobject.lists.exec(str)) !== null) {
-      repstr = '<ul>';
+      if (stra[0].trim().substr(0, 1) === '*') {
+        repstr = '<ul>';
+      } else {
+        repstr = '<ol>';
+      }
       helper = stra[0].split('\n');
       status = 0;
       for (i = 0; i < helper.length; i++) {
-        if ((line = /^(( )*\* ([^\n]+))/.exec(helper[i])) !== null) {
+        if ((line = /^(( )*(\*|\d\.) ([^\n]+))/.exec(helper[i])) !== null) {
           if (line[2] === undefined) {
             nstatus = 0;
           } else {
@@ -64,14 +68,18 @@ var micromarkdown = {
             repstr += '<ul>';
             status = nstatus;
           }
-          repstr += '<li>' + line[3] + '</li>' + '\n';
+          repstr += '<li>' + line[4] + '</li>' + '\n';
           if (status < nstatus) {
             repstr += '</ul>';
             status = nstatus;
           }
         }
       }
-      repstr += '</ul>';
+      if (stra[0].trim().substr(0, 1) === '*') {
+        repstr += '</ul>';
+      } else {
+        repstr += '</ol>';
+      }
       str = str.replace(stra[0], repstr + '\n');
     }
 
@@ -182,7 +190,7 @@ var micromarkdown = {
               helper = helper1[i].split(helper2);
               repstr += '<tr>';
               for (j = 0; j < helper.length; j++) {
-                repstr += '<td>' + micromarkdown.htmlencode(helper[j]) + '</td>';
+                repstr += '<td>' + micromarkdown.htmlEncode(helper[j]) + '</td>';
               }
               repstr += '</tr>';
             }
@@ -231,14 +239,14 @@ var micromarkdown = {
     xhr.send();
   },
   countingChars: function (string, split) {
-    "use strict";
+    'use strict';
     string = string.split(split);
     if (typeof string === 'object') {
       return string.length - 1;
     }
     return 0;
   },
-  htmlencode: function (str) {
+  htmlEncode: function (str) {
     'use strict';
     return str.replace(/[^a-zA-Z0-9\.:\n]/g, function (c) {
       return '&' + (micromarkdown.entityTable[c.charCodeAt(0)] || '#' + c.charCodeAt(0)) + ';';
