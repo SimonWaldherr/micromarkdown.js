@@ -1,7 +1,23 @@
-html, body {
-  height: 100%; margin: 0px; padding: 0px;
+html,
+body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
 }
-body, h1, h2, h3, h4, h5, td, table, a, p, th, b, tr, li {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+td,
+table,
+a,
+p,
+th,
+b,
+tr,
+li {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   font-weight: 100 !important;
 }
@@ -9,15 +25,11 @@ table {
   width: 100%;
   min-height: 100%;
 }
-b, th {
-  font-weight: 300 !important;
-}
-td, th {
-  padding: 25px;
-}
-th {
-  height: 30px;
-}
+b,
+th { font-weight: 300 !important }
+td,
+th { padding: 25px }
+th { height: 30px }
 hr {
   border: 0;
   height: 1px;
@@ -39,12 +51,9 @@ table {
   border-collapse: collapse;
   border-style: hidden;
 }
-table td, table th {
-  border: 1px solid black;
-}
-a:visited {
-  color: #1a7bff;
-}
+table td,
+table th { border: 1px solid black }
+a:visited { color: #1a7bff }
 .ribbon {
   position: absolute;
   top: -1px;
@@ -52,20 +61,17 @@ a:visited {
   opacity: 1;
   z-index: 1;
 }
-#htmlexport table td, #htmlexport table th {
-  border-color: #aaa;
-}
-#htmlexport td, #htmlexport th {
-  padding: 5px;
-}
-#htmlexport table, #htmlexport code {
-  margin-bottom: 20px;
-}
-#markdown, #htmlexport {
+#htmlexport table td,
+#htmlexport table th { border-color: #aaa }
+#htmlexport td,
+#htmlexport th { padding: 5px }
+#htmlexport table,
+#htmlexport code { margin-bottom: 20px }
+#markdown,
+#htmlexport {
   vertical-align: top;
   width: 50%;
   min-width: 30%;
-  
 }
 #htmlexport.source {
   font-family: monospace !important;
@@ -73,12 +79,11 @@ a:visited {
   word-wrap: break-word;
   word-break: break-word;
 }
-#htmlexport.preview {
-  text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
-}
+#htmlexport.preview { text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1) }
 #md {
   width: 100%;
   height: 100%;
+  display: inline-table;
 }
 #html {
   position: absolute;
@@ -100,7 +105,8 @@ a:visited {
   visibility: hidden;
   display: none;
 }
-input[type=checkbox], label {
+input[type=checkbox],
+label {
   height: 10px;
   display: inline-block;
   line-height: 10px;
