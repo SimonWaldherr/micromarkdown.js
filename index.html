@@ -9,8 +9,10 @@
   <script>
     function parseMD() {
       if (document.getElementById('htmlcb').checked !== false) {
+        document.getElementById('htmlexport').className = 'source';
         document.getElementById('htmlexport').innerHTML = micromarkdown.htmlencode(micromarkdown.parse(document.getElementById('md').value));
       } else {
+        document.getElementById('htmlexport').className = 'preview';
         document.getElementById('htmlexport').innerHTML = micromarkdown.parse(document.getElementById('md').value)
       }
     }
@@ -48,7 +50,7 @@
 * list
 
 [link to google](http://google.de)  
-<http://simonwaldherr.de/>
+<http://simonwaldherr.de/>  
 
 *italic* lorem **bold**  
 ipsum _italic_ __bold__  

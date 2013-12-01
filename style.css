@@ -52,6 +52,13 @@ code {
   vertical-align: top;
   width: 50%;
   min-width: 30%;
+  
+}
+#htmlexport.source {
+  font-family: monospace !important;
+  font-size: 15px;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 #md {
   width: 100%;
