@@ -160,21 +160,16 @@ var micromarkdown = {
           helper2 = {};
           helper2[';'] = [];
           helper2[','] = [];
+          helper2[0] = [';', ','];
           helper1 = helper1.split('\n');
-          for (i = 0; i < helper1.length; i++) {
-            helper2[';'][i] = helper1[i].split(';').length;
-            if (i > 0) {
-              if (helper2[';'] !== false) {
-                if ((helper2[';'][i] !== helper2[';'][i - 1]) || (helper2[';'][i] === 1)) {
-                  helper2[';'] = false;
-                }
-              }
-            }
-            helper2[','][i] = helper1[i].split(',').length;
-            if (i > 0) {
-              if (helper2[','] !== false) {
-                if ((helper2[','][i] !== helper2[','][i - 1]) || (helper2[','][i] === 1)) {
-                  helper2[','] = false;
+          for (j = 0; j < helper2[0].length; j++) {
+            for (i = 0; i < helper1.length; i++) {
+              helper2[helper2[0][j]][i] = helper1[i].split(helper2[0][j]).length;
+              if (i > 0) {
+                if (helper2[helper2[0][j]] !== false) {
+                  if ((helper2[helper2[0][j]][i] !== helper2[helper2[0][j]][i - 1]) || (helper2[helper2[0][j]][i] === 1)) {
+                    helper2[helper2[0][j]] = false;
+                  }
                 }
               }
             }
