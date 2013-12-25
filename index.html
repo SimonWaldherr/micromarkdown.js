@@ -16,6 +16,15 @@
         document.getElementById('htmlexport').innerHTML = micromarkdown.parse(document.getElementById('md').value)
       }
     }
+    function resizeTA() {
+      var parent, child, width, height;
+      parent = document.getElementById('markdown');
+      child  = document.getElementById('md');
+      height = parent.clientHeight-50;
+      width  = parent.clientWidth-50;
+      child.style.height = height+'px';
+      child.style.width  = width+'px';
+    }
 
     window.onload = function() {
       input = document.getElementById('defaultmd').innerHTML.split('<!--')[1].split('-->')[0];
@@ -23,7 +32,18 @@
       micromarkdown.useajax = function() {
         parseMD();
       };
+      if(window.attachEvent) {
+        window.attachEvent('onresize', function() {
+          resizeTA();
+        });
+      }
+      else if(window.addEventListener) {
+        window.addEventListener('resize', function() {
+          resizeTA();
+        }, true);
+      }
       parseMD();
+      resizeTA();
     }
   </script>
 </head>
@@ -48,13 +68,13 @@
 
 #![µmd.js](http://simonwaldherr.de/umd.png)
 
-[Lorem ipsum](http://en.wikipedia.org/wiki/Lorem_ipsum) **dolor** sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea **commodo** consequat. Duis aute *irure dolor* in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint **occaecat cupidatat** non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  
+[Lorem ipsum](http://en.wikipedia.org/wiki/Lorem_ipsum) **dolor** sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea **commodo** consequat. Duis *aute **irure dolor** in* reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint **occaecat cupidatat** non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  
 Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo ~~inventore~~ inventari veritatis et quasi ***architecto beatae vitae dicta*** sunt, explicabo.
 
 * At vero eos et accusamus et iusto odio dignissimos ducimus
 * Qui blanditiis praesentium voluptatum deleniti atque corrupti
 * Quos dolores et quas molestias excepturi sint
-* Obcaecati cupiditate non provident
+* Obcaecati *cupiditate **non** provident*
 * Et harum quidem rerum facilis est et expedita distinctio
 
 Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?  
