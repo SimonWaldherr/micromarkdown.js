@@ -22,6 +22,7 @@ var micromarkdown = {
     lists:      /^(( *(\*|\d\.) [^\n]+)\n)+/gm,
     bolditalic: /(?:([\*_~]{1,3}))([^\*_~\n]+[^\*_~\s])\1/g,
     links:      /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
+    reflinks:   /\[([^\]]+)\]\[([^\]]+)\]/g,
     mail:       /<(([a-z0-9_\-\.])+\@([a-z0-9_\-\.])+\.([a-z]{2,7}))>/gmi,
     tables:     /\n(([^|\n]+ *\| *)+([^|\n]+\n))(\-+\|)+(\-+\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
     include:    /[\[<]include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)[\]>]/gi,
@@ -29,7 +30,7 @@ var micromarkdown = {
   },
   parse: function (str) {
     'use strict';
-    var line, nstatus, status, helper, helper1, helper2, count, repstr, stra, i = 0, j = 0;
+    var line, nstatus, status, helper, helper1, helper2, count, repstr, stra, trashgc = [], i = 0, j = 0;
     str = '\n' + str + '\n';
 
     /* code */
@@ -84,7 +85,7 @@ var micromarkdown = {
     }
 
     /* bold and italic */
-    for(i = 0; i < 3; i++) {
+    for (i = 0; i < 3; i++) {
       while ((stra = micromarkdown.regexobject.bolditalic.exec(str)) !== null) {
         repstr = [];
         if (stra[1] === '~~') {
@@ -146,6 +147,16 @@ var micromarkdown = {
         repstr = 'http://' + repstr;
       }
       str = str.replace(stra[0], '<a href="' + repstr + '">' + repstr.replace(/(https:\/\/|http:\/\/|mailto:|ftp:\/\/)/gmi, '') + '</a>');
+    }
+    while ((stra = micromarkdown.regexobject.reflinks.exec(str)) !== null) {
+      helper1 = new RegExp('\\[' + stra[2] + '\\]: ?([^ \n]+)', "gi");
+      if ((helper = helper1.exec(str)) !== null) {
+        str = str.replace(stra[0], '<a href="' + helper[1] + '">' + stra[1] + '</a>');
+        trashgc.push(helper[0]);
+      }
+    }
+    for (i = 0; i < trashgc.length; i++) {
+      str = str.replace(trashgc[i], '');
     }
 
     /* include */
