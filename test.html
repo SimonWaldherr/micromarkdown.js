@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>micromarkdown.js tests</title>
+  <script type="text/javascript" src="./micromarkdown.js"></script>
+  <script>
+    if (!String.prototype.trim) {
+      String.prototype.trim = function () {
+        return this.replace(/^\s+|\s+$/g, '');
+      };
+    }
+    function parseMD() {
+      var tests, i, input, returnstr = '<ol>';
+      tests = document.getElementsByTagName('code');
+      for (i = 0; i < tests.length; i++) {
+        input = tests[i].innerHTML.split('<!--')[1].split('-->')[0].split('|||');
+        //console.log(input);
+        if (micromarkdown.parse(input[0]).toString().trim() === input[1].toString().trim()) {
+          returnstr += '<li style="color: green;">' + tests[i].id + '</li>';
+        } else {
+          returnstr += '<li style="color: red;">' + tests[i].id + '</li>';
+          console.log({"is": micromarkdown.parse(input[0]).toString().trim(), "should": input[1].toString().trim()})
+        }
+      }
+      returnstr += '</ol>';
+      document.getElementById('result').innerHTML = returnstr;
+    }
+
+    window.onload = function() {
+      parseMD();
+    }
+  </script>
+</head>
+<body>
+<div style="display:none;">
+<code id="test_header1">
+<!--
+#Header1
+|||
+<h1>Header1</h1>
+-->
+</code>
+<code id="test_header2">
+<!--
+##Header2
+|||
+<h2>Header2</h2>
+-->
+</code>
+<code id="test_header3">
+<!--
+###Header3
+|||
+<h3>Header3</h3>
+-->
+</code>
+<code id="test_link1">
+<!--
+[SimonWaldherr](http://simon.waldherr.eu/)
+|||
+<a href="http://simon.waldherr.eu/">SimonWaldherr</a>
+-->
+</code>
+<code id="test_link2">
+<!--
+[SimonWaldherr][1]
+[1]: http://simon.waldherr.eu/
+|||
+<a href="http://simon.waldherr.eu/">SimonWaldherr</a>
+-->
+</code>
+<code id="test_bold">
+<!--
+**bold** text
+|||
+<b>bold</b> text
+-->
+</code>
+<code id="test_italic">
+<!--
+*italic* test
+|||
+<i>italic</i> test
+-->
+</code>
+<code id="test_bolditalic">
+<!--
+*italic and **bold** text*
+|||
+<i>italic and <b>bold</b> text</i>
+-->
+</code>
+<code id="test_olist">
+<!--
+1. this
+2. is a
+3. list
+|||
+<ol><li>this</li>
+<li>is a</li>
+<li>list</li>
+</ol>
+-->
+</code>
+<code id="test_ulist">
+<!--
+* this
+* is a
+* list
+|||
+<ul><li>this</li>
+<li>is a</li>
+<li>list</li>
+</ul>
+-->
+</code>
+<code id="test_table">
+<!--
+this | is a   | table  
+-----|--------|--------
+with | sample | content
+lorem| ipsum  | dolor  
+sit  | amet   | sed    
+do   | eiusom | tempor 
+|||
+<table><tr><th>this </th><th> is a   </th><th> table</br></br></th></tr><tr><td>with </td><td> sample </td><td> content</td></tr>
+<tr><td>lorem</td><td> ipsum  </td><td> dolor  </td></tr>
+<tr><td>sit  </td><td> amet   </td><td> sed    </td></tr>
+<tr><td>do   </td><td> eiusom </td><td> tempor </td></tr>
+</table>
+-->
+</code>
+<code id="test_code">
+<!--
+```
+var md   = document.getElementById("md").value,
+    html = micromarkdown.parse(md);
+```
+|||
+<code>
+var&nbsp;md&nbsp;&nbsp;&nbsp;&#61;&nbsp;document.getElementById&#40;&quot;md&quot;&#41;.value&#44;<br/>&nbsp;&nbsp;&nbsp;&nbsp;html&nbsp;&#61;&nbsp;micromarkdown.parse&#40;md&#41;&#59;<br/></code>
+-->
+</code>
+</div>
+<div class="result" id="result">
+  
+</div>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33526676-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</body>
+</html>
