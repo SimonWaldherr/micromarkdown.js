@@ -5,7 +5,7 @@ convert [markdown](http://en.wikipedia.org/wiki/Markdown) to [HTML](http://en.wi
 ##about
 
 License:   MIT  
-Version: 0.1.4  
+Version: 0.1.5  
 Date:  12.2013  
 
 ##demo

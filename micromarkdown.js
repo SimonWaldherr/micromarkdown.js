@@ -7,7 +7,7 @@
 * http://simon.waldherr.eu/license/mit/
 *
 * Github:  https://github.com/simonwaldherr/micromarkdown.js/
-* Version: 0.1.4
+* Version: 0.1.5
 */
 
 /*jslint browser: true, plusplus: true, indent: 2, regexp: true, ass: true */
@@ -30,7 +30,7 @@ var micromarkdown = {
   },
   parse: function (str) {
     'use strict';
-    var line, nstatus, status, helper, helper1, helper2, count, repstr, stra, trashgc = [], i = 0, j = 0;
+    var line, nstatus, status, helper, helper1, helper2, count, repstr, stra, trashgc = [], casca = 0, i = 0, j = 0;
     str = '\n' + str + '\n';
 
     /* code */
@@ -51,6 +51,7 @@ var micromarkdown = {
 
     /* lists */
     while ((stra = micromarkdown.regexobject.lists.exec(str)) !== null) {
+      casca = 0;
       if (stra[0].trim().substr(0, 1) === '*') {
         repstr = '<ul>';
       } else {
@@ -66,15 +67,21 @@ var micromarkdown = {
             nstatus = line[2].length;
           }
           if (status > nstatus) {
-            repstr += '<ul>';
-            status = nstatus;
-          }
-          repstr += '<li>' + line[4] + '</li>' + '\n';
-          if (status < nstatus) {
             repstr += '</ul>';
             status = nstatus;
+            casca--;
           }
+          if (status < nstatus) {
+            repstr += '<ul>';
+            status = nstatus;
+            casca++;
+          }
+          repstr += '<li>' + line[4] + '</li>' + '\n';
         }
+      }
+      while (casca > 0) {
+        repstr += '</ul>';
+        casca--;
       }
       if (stra[0].trim().substr(0, 1) === '*') {
         repstr += '</ul>';
