@@ -220,7 +220,7 @@ var micromarkdown = {
       }
     }
 
-    str = str.replace(/ {2,}[\n]{1,}/gmi, '</br></br>');
+    str = str.replace(/ {2,}[\n]{1,}/gmi, '<br/><br/>');
     return str;
   },
   ajax: function (str) {

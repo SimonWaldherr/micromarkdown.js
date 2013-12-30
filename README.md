@@ -1,6 +1,7 @@
 #![micromarkdown.js](http://simonwaldherr.de/umd.png)
 
-convert [markdown](http://en.wikipedia.org/wiki/Markdown) to [HTML](http://en.wikipedia.org/wiki/HTML) in under 5kb
+convert [markdown](http://en.wikipedia.org/wiki/Markdown) to [HTML](http://en.wikipedia.org/wiki/HTML) in under 5kb  
+take a look at the to PHP translated version: https://github.com/SimonWaldherr/micromarkdown.php
 
 ##about
 
