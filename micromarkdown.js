@@ -24,13 +24,13 @@ var micromarkdown = {
     links:      /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
     reflinks:   /\[([^\]]+)\]\[([^\]]+)\]/g,
     mail:       /<(([a-z0-9_\-\.])+\@([a-z0-9_\-\.])+\.([a-z]{2,7}))>/gmi,
-    tables:     /\n(([^|\n]+ *\| *)+([^|\n]+\n))(\-+\|)+(\-+\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
+    tables:     /\n(([^|\n]+ *\| *)+([^|\n]+\n))((:?\-+:?\|)+(:?\-+:?)*\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
     include:    /[\[<]include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)[\]>]/gi,
     url:        /<([a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[\-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)>/g
   },
   parse: function (str) {
     'use strict';
-    var line, nstatus, status, helper, helper1, helper2, count, repstr, stra, trashgc = [], casca = 0, i = 0, j = 0;
+    var line, nstatus, status, cel, calign, helper, helper1, helper2, count, repstr, stra, trashgc = [], casca = 0, i = 0, j = 0;
     str = '\n' + str + '\n';
 
     /* code */
@@ -118,17 +118,32 @@ var micromarkdown = {
     while ((stra = micromarkdown.regexobject.tables.exec(str)) !== null) {
       repstr = '<table><tr>';
       helper = stra[1].split('|');
+      calign = stra[4].split('|');
+      for (i=0; i<helper.length; i++) {
+        if (calign.length <= i) {
+          calign.push(0)
+        } else if (calign[i].trimRight().slice(-1) == ':') {
+          if (calign[i][0] == ':') calign[i] = 3;
+          else calign[i] = 2;
+        } else {
+          if (calign[i][0] == ':') calign[i] = 1;
+          else calign[i] = 0;
+        }
+      }
+      cel = ['<th>', '<th align="left">', '<th align="right">', '<th align="center">'];
       for (i = 0; i < helper.length; i++) {
-        repstr += '<th>' + helper[i] + '</th>';
+        repstr += cel[calign[i]] + helper[i] + '</th>';
       }
       repstr += '</tr>';
-      helper1 = stra[6].split('\n');
+      cel = ['<td>', '<td align="left">', '<td align="right">', '<td align="center">'];
+      helper1 = stra[7].split('\n');
       for (i = 0; i < helper1.length; i++) {
         helper2 = helper1[i].split('|');
         if (helper2[0].length !== 0) {
+          while (calign.length < helper2.length) calign.push(0);
           repstr += '<tr>';
           for (j = 0; j < helper2.length; j++) {
-            repstr += '<td>' + helper2[j] + '</td>';
+            repstr += cel[calign[j]] + helper2[j] + '</td>';
           }
           repstr += '</tr>' + '\n';
         }
