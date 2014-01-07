@@ -2,12 +2,12 @@
 * µmarkdown.js
 * markdown in under 5kb
 *
-* Copyright 2013, Simon Waldherr - http://simon.waldherr.eu/
+* Copyright 2014, Simon Waldherr - http://simon.waldherr.eu/
 * Released under the MIT Licence
 * http://simon.waldherr.eu/license/mit/
 *
 * Github:  https://github.com/simonwaldherr/micromarkdown.js/
-* Version: 0.1.5
+* Version: 0.1.6
 */
 
 /*jslint browser: true, plusplus: true, indent: 2, regexp: true, ass: true */
@@ -119,20 +119,26 @@ var micromarkdown = {
       repstr = '<table><tr>';
       helper = stra[1].split('|');
       calign = stra[4].split('|');
-      for (i=0; i<helper.length; i++) {
+      for (i = 0; i < helper.length; i++) {
         if (calign.length <= i) {
-          calign.push(0)
-        } else if (calign[i].trimRight().slice(-1) == ':') {
-          if (calign[i][0] == ':') calign[i] = 3;
-          else calign[i] = 2;
+          calign.push(0);
+        } else if (calign[i].trimRight().slice(-1) === ':') {
+          if (calign[i][0] === ':') {
+            calign[i] = 3;
+          } else {
+            calign[i] = 2;
+          }
         } else {
-          if (calign[i][0] == ':') calign[i] = 1;
-          else calign[i] = 0;
+          if (calign[i][0] === ':') {
+            calign[i] = 1;
+          } else {
+            calign[i] = 0;
+          }
         }
       }
       cel = ['<th>', '<th align="left">', '<th align="right">', '<th align="center">'];
       for (i = 0; i < helper.length; i++) {
-        repstr += cel[calign[i]] + helper[i] + '</th>';
+        repstr += cel[calign[i]] + helper[i].trim() + '</th>';
       }
       repstr += '</tr>';
       cel = ['<td>', '<td align="left">', '<td align="right">', '<td align="center">'];
@@ -140,10 +146,12 @@ var micromarkdown = {
       for (i = 0; i < helper1.length; i++) {
         helper2 = helper1[i].split('|');
         if (helper2[0].length !== 0) {
-          while (calign.length < helper2.length) calign.push(0);
+          while (calign.length < helper2.length) {
+            calign.push(0);
+          }
           repstr += '<tr>';
           for (j = 0; j < helper2.length; j++) {
-            repstr += cel[calign[j]] + helper2[j] + '</td>';
+            repstr += cel[calign[j]] + helper2[j].trim() + '</td>';
           }
           repstr += '</tr>' + '\n';
         }
