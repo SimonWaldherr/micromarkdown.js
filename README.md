@@ -11,7 +11,8 @@ Date:  01.2014
 
 ##demo
 
-Test this code on the associated github page [simonwaldherr.github.io/micromarkdown.js/](http://simonwaldherr.github.io/micromarkdown.js/).
+Test this code on the associated github page [simonwaldherr.github.io/micromarkdown.js/](http://simonwaldherr.github.io/micromarkdown.js/).  
+There is also a [Testpage](http://simonwaldherr.github.io/micromarkdown.js/test.html) and a [diff between the php and the js version](http://simonwaldherr.github.io/micromarkdown.js/diff.html).
 
 ##contact
 
