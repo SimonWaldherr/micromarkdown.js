@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>micromarkdown.js/php diff</title>
+  <script type="text/javascript" src="http://simonwaldherr.github.io/micromarkdown.js/micromarkdown.js"></script>
+  <script type="text/javascript" src="http://simonwaldherr.github.io/majaX.js/majax.js"></script>
+  <script type="text/javascript" src="http://simonwaldherr.github.io/disTime.js/disTime.js"></script>
+  <script type="text/javascript" src="http://simonwaldherr.github.io/tinyOSF.js/diff_match.js"></script>
+  <script>
+    var dmp = new Diff_match_patch(),
+      lstatus = 2,
+      jscode = '',
+      phpcode = '',
+      url = {
+        php: 'http://simonwaldherr.github.io/micromarkdown.php/micromarkdown.php',
+        js: 'http://simonwaldherr.github.io/micromarkdown.js/micromarkdown.js'
+      };
+
+    function diffCode() {
+      "use strict";
+      var ms_start,
+        d,
+        ms_end,
+        ds;
+      if (lstatus === 2) {
+        majaX({url:url.php, method:'GET', type:'plain'}, function(plain, ajax) {
+          phpcode = plain;
+          lstatus += 1;
+        });
+        majaX({url:url.js, method:'GET', type:'plain'}, function(plain, ajax) {
+          jscode = plain;
+          lstatus += 1;
+        });
+        lstatus += 1;
+      }
+
+      if (lstatus === 5) {
+        dmp.Diff_Timeout = 5;
+        dmp.Diff_EditCost = 8;
+        ms_start = (new Date()).getTime();
+        d = dmp.diff_main(jscode, phpcode);
+        ms_end = (new Date()).getTime();
+        dmp.diff_cleanupEfficiency(d);
+        ds = dmp.diff_prettyHtml(d);
+        document.getElementById('diff').innerHTML = ds.replace(/&para;/gmi, '') + '<br/>Time: ' + (ms_end - ms_start) / 1000 + 's';
+      } else {
+        window.setTimeout(diffCode, 200);
+      }
+    }
+    window.onload = function () {
+      diffCode();
+    }
+  </script>
+</head>
+<body>
+<div id="diff" style="font-family: Menlo, Consolas, Monaco, 'Lucida Console', monospace; white-space: pre; word-wrap: break-word;">
+  
+</div>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33526676-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</body>
+</html>
