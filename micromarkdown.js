@@ -16,9 +16,9 @@
 var micromarkdown = {
   useajax: false,
   regexobject: {
-    headline:   /^(\#{1,6})([^\#\n]+)\n/m,
+    headline:   /^(\#{1,6})([^\#\n]+)$/m,
     code:       /\s\`\`\`\n?([^`]+)\`\`\`/g,
-    hr:         /\n(?:([\*\-_] ?)+)\1\1\n/gm,
+    hr:         /\n(?:([\*\-_] ?)+)\1\1$/gm,
     lists:      /^(( *(\*|\d\.) [^\n]+)\n)+/gm,
     bolditalic: /(?:([\*_~]{1,3}))([^\*_~\n]+[^\*_~\s])\1/g,
     links:      /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
@@ -89,29 +89,6 @@ var micromarkdown = {
         repstr += '</ol>';
       }
       str = str.replace(stra[0], repstr + '\n');
-    }
-
-    /* bold and italic */
-    for (i = 0; i < 3; i++) {
-      while ((stra = micromarkdown.regexobject.bolditalic.exec(str)) !== null) {
-        repstr = [];
-        if (stra[1] === '~~') {
-          str = str.replace(stra[0], '<del>' + stra[2] + '</del>');
-        } else {
-          switch (stra[1].length) {
-          case 1:
-            repstr = ['<i>', '</i>'];
-            break;
-          case 2:
-            repstr = ['<b>', '</b>'];
-            break;
-          case 3:
-            repstr = ['<i><b>', '</b></i>'];
-            break;
-          }
-          str = str.replace(stra[0], repstr[0] + stra[2] + repstr[1]);
-        }
-      }
     }
 
     /* tables */
@@ -187,6 +164,29 @@ var micromarkdown = {
     }
     for (i = 0; i < trashgc.length; i++) {
       str = str.replace(trashgc[i], '');
+    }
+
+    /* bold and italic */
+    for (i = 0; i < 3; i++) {
+      while ((stra = micromarkdown.regexobject.bolditalic.exec(str)) !== null) {
+        repstr = [];
+        if (stra[1] === '~~') {
+          str = str.replace(stra[0], '<del>' + stra[2] + '</del>');
+        } else {
+          switch (stra[1].length) {
+          case 1:
+            repstr = ['<i>', '</i>'];
+            break;
+          case 2:
+            repstr = ['<b>', '</b>'];
+            break;
+          case 3:
+            repstr = ['<i><b>', '</b></i>'];
+            break;
+          }
+          str = str.replace(stra[0], repstr[0] + stra[2] + repstr[1]);
+        }
+      }
     }
 
     /* include */
