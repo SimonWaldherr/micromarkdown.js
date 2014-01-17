@@ -18,8 +18,8 @@ var micromarkdown = {
   regexobject: {
     headline:   /^(\#{1,6})([^\#\n]+)$/m,
     code:       /\s\`\`\`\n?([^`]+)\`\`\`/g,
-    hr:         /\n(?:([\*\-_] ?)+)\1\1$/gm,
-    lists:      /^(( *(\*|\d\.) [^\n]+)\n)+/gm,
+    hr:         /^(?:([\*\-_] ?)+)\1\1$/gm,
+    lists:      /^((\s*(\*|\d\.) [^\n]+)\n)+/gm,
     bolditalic: /(?:([\*_~]{1,3}))([^\*_~\n]+[^\*_~\s])\1/g,
     links:      /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
     reflinks:   /\[([^\]]+)\]\[([^\]]+)\]/g,
@@ -30,7 +30,7 @@ var micromarkdown = {
   },
   parse: function (str) {
     'use strict';
-    var line, nstatus, status, cel, calign, helper, helper1, helper2, count, repstr, stra, trashgc = [], casca = 0, i = 0, j = 0;
+    var line, nstatus = 0, status, cel, calign, indent, helper, helper1, helper2, count, repstr, stra, trashgc = [], casca = 0, i = 0, j = 0;
     str = '\n' + str + '\n';
 
     /* code */
@@ -44,11 +44,6 @@ var micromarkdown = {
       str = str.replace(stra[0], '<h' + count + '>' + stra[2] + '</h' + count + '>' + '\n');
     }
 
-    /* horizontal line */
-    while ((stra = micromarkdown.regexobject.hr.exec(str)) !== null) {
-      str = str.replace(stra[0], '\n<hr/>\n');
-    }
-
     /* lists */
     while ((stra = micromarkdown.regexobject.lists.exec(str)) !== null) {
       casca = 0;
@@ -58,22 +53,33 @@ var micromarkdown = {
         repstr = '<ol>';
       }
       helper = stra[0].split('\n');
+      helper1 = [];
       status = 0;
+      indent = false;
       for (i = 0; i < helper.length; i++) {
-        if ((line = /^(( )*(\*|\d\.) ([^\n]+))/.exec(helper[i])) !== null) {
-          if (line[2] === undefined) {
+        if ((line = /^((\s*)(\*|\d\.) ([^\n]+))/.exec(helper[i])) !== null) {
+          if ((line[2] === undefined)||(line[2].length === 0)) {
             nstatus = 0;
           } else {
-            nstatus = line[2].length;
+            if (indent === false) {
+              indent = line[2].replace(/\t/, '    ').length;
+            }
+            nstatus = Math.round(line[2].replace(/\t/, '    ').length / indent);
           }
-          if (status > nstatus) {
-            repstr += '</ul>';
-            status = nstatus;
+          while (status > nstatus) {
+            repstr += helper1.pop();
+            status--;
             casca--;
           }
-          if (status < nstatus) {
-            repstr += '<ul>';
-            status = nstatus;
+          while (status < nstatus) {
+            if (line[0].trim().substr(0, 1) === '*') {
+              repstr += '<ul>';
+              helper1.push('</ul>');
+            } else {
+              repstr += '<ol>';
+              helper1.push('</ol>');
+            }
+            status++;
             casca++;
           }
           repstr += '<li>' + line[4] + '</li>' + '\n';
@@ -189,6 +195,11 @@ var micromarkdown = {
       }
     }
 
+    /* horizontal line */
+    while ((stra = micromarkdown.regexobject.hr.exec(str)) !== null) {
+      str = str.replace(stra[0], '\n<hr/>\n');
+    }
+
     /* include */
     if (micromarkdown.useajax !== false) {
       while ((stra = micromarkdown.regexobject.include.exec(str)) !== null) {
@@ -207,7 +218,6 @@ var micromarkdown = {
           helper1 = helper1.split('\n');
           for (j = 0; j < helper2[0].length; j++) {
             for (i = 0; i < helper1.length; i++) {
-              helper2[helper2[0][j]][i] = helper1[i].split(helper2[0][j]).length;
               if (i > 0) {
                 if (helper2[helper2[0][j]] !== false) {
                   if ((helper2[helper2[0][j]][i] !== helper2[helper2[0][j]][i - 1]) || (helper2[helper2[0][j]][i] === 1)) {
