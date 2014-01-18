@@ -15,7 +15,6 @@
       tests = document.getElementsByTagName('code');
       for (i = 0; i < tests.length; i++) {
         input = tests[i].innerHTML.split('<!--')[1].split('-->')[0].split('|||');
-        //console.log(input);
         if (micromarkdown.parse(input[0]).toString().trim() === input[1].toString().trim()) {
           returnstr += '<li style="color: green;">' + tests[i].id + '</li>';
         } else {
@@ -115,19 +114,37 @@
 </ul>
 -->
 </code>
+<code id="test_nestedlist">
+<!--
+* this
+* is a
+  1. test
+  1. and
+  1. demo
+* list
+|||
+<ul><li>this</li>
+<li>is a</li>
+<ol><li>test</li>
+<li>and</li>
+<li>demo</li>
+</ol><li>list</li>
+</ul>
+-->
+</code>
 <code id="test_table">
 <!--
-this | is a   | table  
------|--------|--------
-with | sample | content
-lorem| ipsum  | dolor  
-sit  | amet   | sed    
-do   | eiusom | tempor 
+this  | is a     | test    | table 
+-----:|:--------:|:--------|-------
+with  |   sample | content | lorem
+lorem |   ipsum  | dolor   | ipsum
+sit   |   amet   | sed     | dolor
+do    |   eiusom | tempor  | sit a
 |||
-<table><tr><th>this</th><th>is a</th><th>table</th></tr><tr><td>with</td><td>sample</td><td>content</td></tr>
-<tr><td>lorem</td><td>ipsum</td><td>dolor</td></tr>
-<tr><td>sit</td><td>amet</td><td>sed</td></tr>
-<tr><td>do</td><td>eiusom</td><td>tempor</td></tr>
+<table><tr><th align="right">this</th><th align="center">is a</th><th align="left">test</th><th>table</th></tr><tr><td align="right">with</td><td align="center">sample</td><td align="left">content</td><td>lorem</td></tr>
+<tr><td align="right">lorem</td><td align="center">ipsum</td><td align="left">dolor</td><td>ipsum</td></tr>
+<tr><td align="right">sit</td><td align="center">amet</td><td align="left">sed</td><td>dolor</td></tr>
+<tr><td align="right">do</td><td align="center">eiusom</td><td align="left">tempor</td><td>sit a</td></tr>
 </table>
 -->
 </code>
@@ -139,7 +156,7 @@ var md   = document.getElementById("md").value,
 ```
 |||
 <code>
-var&nbsp;md&nbsp;&nbsp;&nbsp;&#61;&nbsp;document.getElementById&#40;&quot;md&quot;&#41;.value&#44;<br/>&nbsp;&nbsp;&nbsp;&nbsp;html&nbsp;&#61;&nbsp;micromarkdown.parse&#40;md&#41;&#59;<br/></code>
+var&nbsp;md&nbsp;&nbsp;&nbsp;=&nbsp;document.getElementById("md").value,<br/>&nbsp;&nbsp;&nbsp;&nbsp;html&nbsp;=&nbsp;micromarkdown.parse(md);<br/></code>
 -->
 </code>
 </div>

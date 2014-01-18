@@ -1,15 +1,14 @@
 /*
-* µmarkdown.js
-* markdown in under 5kb
-*
-* Copyright 2014, Simon Waldherr - http://simon.waldherr.eu/
-* Released under the MIT Licence
-* http://simon.waldherr.eu/license/mit/
-*
-* Github:  https://github.com/simonwaldherr/micromarkdown.js/
-* Version: 0.1.7
-*/
-
+ * µmarkdown.js
+ * markdown in under 5kb
+ *
+ * Copyright 2014, Simon Waldherr - http://simon.waldherr.eu/
+ * Released under the MIT Licence
+ * http://simon.waldherr.eu/license/mit/
+ *
+ * Github:  https://github.com/simonwaldherr/micromarkdown.js/
+ * Version: 0.1.8
+ */
 /*jslint browser: true, plusplus: true, indent: 2, regexp: true, ass: true */
 /*global ActiveXObject */
 
@@ -30,7 +29,11 @@ var micromarkdown = {
   },
   parse: function (str) {
     'use strict';
-    var line, nstatus = 0, status, cel, calign, indent, helper, helper1, helper2, count, repstr, stra, trashgc = [], casca = 0, i = 0, j = 0;
+    var line, nstatus = 0,
+      status, cel, calign, indent, helper, helper1, helper2, count, repstr, stra, trashgc = [],
+      casca = 0,
+      i = 0,
+      j = 0;
     str = '\n' + str + '\n';
 
     /* code */
@@ -58,7 +61,7 @@ var micromarkdown = {
       indent = false;
       for (i = 0; i < helper.length; i++) {
         if ((line = /^((\s*)(\*|\d\.) ([^\n]+))/.exec(helper[i])) !== null) {
-          if ((line[2] === undefined)||(line[2].length === 0)) {
+          if ((line[2] === undefined) || (line[2].length === 0)) {
             nstatus = 0;
           } else {
             if (indent === false) {
@@ -296,9 +299,10 @@ var micromarkdown = {
   },
   htmlEncode: function (str) {
     'use strict';
-    return str.replace(/[^a-zA-Z0-9\.:\n]/g, function (c) {
-      return '&' + (micromarkdown.entityTable[c.charCodeAt(0)] || '#' + c.charCodeAt(0)) + ';';
-    });
-  },
-  entityTable: {32: 'nbsp', 34: 'quot', 38: 'amp', 39: 'apos', 60: 'lt', 62: 'gt', 161: 'iexcl', 162: 'cent', 163: 'pound', 164: 'curren', 165: 'yen', 166: 'brvbar', 167: 'sect', 168: 'uml', 169: 'copy', 170: 'ordf', 171: 'laquo', 172: 'not', 173: 'shy', 174: 'reg', 175: 'macr', 176: 'deg', 177: 'plusmn', 178: 'sup2', 179: 'sup3', 180: 'acute', 181: 'micro', 196: 'Auml', 203: 'Euml', 207: 'Iuml', 214: 'Ouml', 220: 'Uuml', 223: 'szlig', 228: 'auml', 235: 'euml', 239: 'iuml', 246: 'ouml', 252: 'uuml', 255: 'yuml', 913: 'Alpha', 914: 'Beta', 915: 'Gamma', 916: 'Delta', 917: 'Epsilon', 918: 'Zeta', 919: 'Eta', 920: 'Theta', 921: 'Iota', 922: 'Kappa', 923: 'Lambda', 924: 'Mu', 925: 'Nu', 926: 'Xi', 927: 'Omicron', 928: 'Pi', 929: 'Rho', 931: 'Sigma', 932: 'Tau', 933: 'Upsilon', 934: 'Phi', 935: 'Chi', 936: 'Psi', 937: 'Omega', 945: 'alpha', 946: 'beta', 947: 'gamma', 948: 'delta', 949: 'epsilon', 950: 'zeta', 951: 'eta', 952: 'theta', 953: 'iota', 954: 'kappa', 955: 'lambda', 956: 'mu', 957: 'nu', 958: 'xi', 959: 'omicron', 960: 'pi', 961: 'rho', 962: 'sigmaf', 963: 'sigma', 964: 'tau', 965: 'upsilon', 966: 'phi', 967: 'chi', 968: 'psi', 969: 'omega', 8364: 'euro'}
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    str = div.innerHTML;
+    div = undefined;
+    return str;
+  }
 };
