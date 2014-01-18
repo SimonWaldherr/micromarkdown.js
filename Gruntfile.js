@@ -13,6 +13,12 @@ module.exports = function(grunt) {
         cache: "dist/.sizecache.json"
       }
     },
+    jshint: {
+      files: ['./micromarkdown.js'],
+      options: {
+        globals: {}
+      }
+    },
     uglify: {
       options: {
         banner: '/* * * * * * * * * * * *\n' +
@@ -42,5 +48,6 @@ module.exports = function(grunt) {
   });
   grunt.loadNpmTasks("grunt-compare-size");
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.registerTask('default', ['uglify', 'compare_size']);
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.registerTask('default', ['jshint', 'uglify', 'compare_size']);
 };

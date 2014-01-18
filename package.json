@@ -2,7 +2,7 @@
   "name": "micromarkdown",
   "title": "micromarkdown.js",
   "description": "converts markdown to html",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "homepage": "https://github.com/SimonWaldherr/micromarkdown.js",
   "author": {
     "name": "Simon Waldherr",
@@ -26,10 +26,9 @@
   "devDependencies": {
     "grunt": ">= 0.4.1",
     "gzip-js": ">= 0.3.1",
-    "grunt-contrib-jshint": ">= 0.6.0",
+    "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-uglify": ">= 0.2.2",
-    "grunt-compare-size": ">= 0.0.0",
-    "gzip-js": ">= 0.3.1"
+    "grunt-compare-size": ">= 0.0.0"
   },
   "keywords": [
     "markdown",

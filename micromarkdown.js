@@ -7,7 +7,7 @@
 * http://simon.waldherr.eu/license/mit/
 *
 * Github:  https://github.com/simonwaldherr/micromarkdown.js/
-* Version: 0.1.6
+* Version: 0.1.7
 */
 
 /*jslint browser: true, plusplus: true, indent: 2, regexp: true, ass: true */

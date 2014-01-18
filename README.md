@@ -6,7 +6,7 @@ take a look at the to PHP translated version: https://github.com/SimonWaldherr/m
 ##about
 
 License:   MIT  
-Version: 0.1.6  
+Version: 0.1.7  
 Date:  01.2014  
 
 ##demo
