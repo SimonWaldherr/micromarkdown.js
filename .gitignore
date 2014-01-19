@@ -1,1 +1,4 @@
 node_modules
+-trash
+.DS_Store
+thumbs.db

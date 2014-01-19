@@ -15,11 +15,20 @@
       tests = document.getElementsByTagName('code');
       for (i = 0; i < tests.length; i++) {
         input = tests[i].innerHTML.split('<!--')[1].split('-->')[0].split('|||');
-        if (micromarkdown.parse(input[0]).toString().trim() === input[1].toString().trim()) {
-          returnstr += '<li style="color: green;">' + tests[i].id + '</li>';
+        if (tests[i].id.indexOf('gfm') !== -1) {
+          if (micromarkdown.parse(input[0], false).toString().trim() === input[1].toString().trim()) {
+            returnstr += '<li style="color: green;">' + tests[i].id + '</li>';
+          } else {
+            returnstr += '<li style="color: red;">' + tests[i].id + '</li>';
+            console.log({"is": [micromarkdown.parse(input[0], false).toString().trim()], "should": [input[1].toString().trim()]});
+          }
         } else {
-          returnstr += '<li style="color: red;">' + tests[i].id + '</li>';
-          console.log({"is": [micromarkdown.parse(input[0]).toString().trim()], "should": [input[1].toString().trim()]})
+          if (micromarkdown.parse(input[0], true).toString().trim() === input[1].toString().trim()) {
+            returnstr += '<li style="color: green;">' + tests[i].id + '</li>';
+          } else {
+            returnstr += '<li style="color: red;">' + tests[i].id + '</li>';
+            console.log({"is": [micromarkdown.parse(input[0], true).toString().trim()], "should": [input[1].toString().trim()]});
+          }
         }
       }
       returnstr += '</ol>';
@@ -133,6 +142,22 @@
 -->
 </code>
 <code id="test_table">
+<!--
+this | is a   | table  
+-----|--------|--------
+with | sample | content
+lorem| ipsum  | dolor  
+sit  | amet   | sed    
+do   | eiusom | tempor 
+|||
+<table><tr><th>this</th><th>is a</th><th>table</th></tr><tr><td>with</td><td>sample</td><td>content</td></tr>
+<tr><td>lorem</td><td>ipsum</td><td>dolor</td></tr>
+<tr><td>sit</td><td>amet</td><td>sed</td></tr>
+<tr><td>do</td><td>eiusom</td><td>tempor</td></tr>
+</table>
+-->
+</code>
+<code id="test_gfmtable">
 <!--
 this  | is a     | test    | table 
 -----:|:--------:|:--------|-------
