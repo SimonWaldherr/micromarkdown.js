@@ -9,6 +9,19 @@ License:   MIT
 Version: 0.1.8  
 Date:  01.2014  
 
+##howto
+
+```html
+<script type="text/javascript" src="http://simonwaldherr.github.io/micromarkdown.js/dist/micromarkdown.min.js"></script>
+```
+
+```js
+var input = document.getElementById('input').value,
+    outputEle = document.getElementById('outEle');
+
+outputEle.innerHTML = micromarkdown.parse(input);
+```
+
 ##demo
 
 Test this code on the associated github page [simonwaldherr.github.io/micromarkdown.js/](http://simonwaldherr.github.io/micromarkdown.js/).  
