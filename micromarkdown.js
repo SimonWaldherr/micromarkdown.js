@@ -205,7 +205,6 @@ var micromarkdown = {
       str = str.replace(trashgc[i], '');
     }
     while ((stra = micromarkdown.regexobject.smlinks.exec(str)) !== null) {
-      console.log(stra);
       switch (stra[2]) {
       case 't':
         repstr = 'https://twitter.com/' + stra[1];
@@ -242,8 +241,8 @@ var micromarkdown = {
           micromarkdown.ajax(stra[2]);
         }
         if ((stra[1] === 'csv') && (helper1 !== '')) {
-          helper2 = {';': [], '	': [], ',': [], '|': []};
-          helper2[0] = [';', '	', ',', '|'];
+          helper2 = {';': [], '\t': [], ',': [], '|': []};
+          helper2[0] = [';', '\t', ',', '|'];
           helper1 = helper1.split('\n');
           for (j = 0; j < helper2[0].length; j++) {
             for (i = 0; i < helper1.length; i++) {
@@ -256,11 +255,11 @@ var micromarkdown = {
               }
             }
           }
-          if ((helper2[';'] !== false) || (helper2['	'] !== false) || (helper2[','] !== false) || (helper2['|'] !== false)) {
+          if ((helper2[';'] !== false) || (helper2['\t'] !== false) || (helper2[','] !== false) || (helper2['|'] !== false)) {
             if (helper2[';'] !== false) {
               helper2 = ';';
-            } else if (helper2['	']) {
-              helper2 = '	';
+            } else if (helper2['\t']) {
+              helper2 = '\t';
             } else if (helper2[',']) {
               helper2 = ',';
             } else if (helper2['|']) {
@@ -336,6 +335,7 @@ var micromarkdown = {
     return str;
   },
   mmdCSSclass: function (str, strict) {
+    'use strict';
     var urlTemp;
     if ((str.indexOf('/') !== -1) && (strict !== true)) {
       urlTemp = str.split('/');
