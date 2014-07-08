@@ -7,26 +7,27 @@
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/simonwaldherr/micromarkdown.js/
- * Version: 0.2.0
+ * Version: 0.3.0
  */
-/*jslint browser: true, plusplus: true, indent: 2, regexp: true, ass: true */
-/*global ActiveXObject */
+
+/*jslint browser: true, node: true, plusplus: true, indent: 2, regexp: true, ass: true */
+/*global ActiveXObject, define */
 
 var micromarkdown = {
   useajax: false,
   regexobject: {
-    headline:   /^(\#{1,6})([^\#\n]+)$/m,
-    code:       /\s\`\`\`\n?([^`]+)\`\`\`/g,
-    hr:         /^(?:([\*\-_] ?)+)\1\1$/gm,
-    lists:      /^((\s*((\*|\-)|\d(\.|\))) [^\n]+)\n)+/gm,
+    headline: /^(\#{1,6})([^\#\n]+)$/m,
+    code: /\s\`\`\`\n?([^`]+)\`\`\`/g,
+    hr: /^(?:([\*\-_] ?)+)\1\1$/gm,
+    lists: /^((\s*((\*|\-)|\d(\.|\))) [^\n]+)\n)+/gm,
     bolditalic: /(?:([\*_~]{1,3}))([^\*_~\n]+[^\*_~\s])\1/g,
-    links:      /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
-    reflinks:   /\[([^\]]+)\]\[([^\]]+)\]/g,
-    smlinks:    /\@([a-z0-9]{3,})\@(t|gh|fb|gp|adn)/gi,
-    mail:       /<(([a-z0-9_\-\.])+\@([a-z0-9_\-\.])+\.([a-z]{2,7}))>/gmi,
-    tables:     /\n(([^|\n]+ *\| *)+([^|\n]+\n))((:?\-+:?\|)+(:?\-+:?)*\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
-    include:    /[\[<]include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)[\]>]/gi,
-    url:        /<([a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[\-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)>/g
+    links: /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
+    reflinks: /\[([^\]]+)\]\[([^\]]+)\]/g,
+    smlinks: /\@([a-z0-9]{3,})\@(t|gh|fb|gp|adn)/gi,
+    mail: /<(([a-z0-9_\-\.])+\@([a-z0-9_\-\.])+\.([a-z]{2,7}))>/gmi,
+    tables: /\n(([^|\n]+ *\| *)+([^|\n]+\n))((:?\-+:?\|)+(:?\-+:?)*\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
+    include: /[\[<]include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)[\]>]/gi,
+    url: /<([a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[\-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)>/g
   },
   parse: function (str, strict) {
     'use strict';
@@ -241,7 +242,12 @@ var micromarkdown = {
           micromarkdown.ajax(stra[2]);
         }
         if ((stra[1] === 'csv') && (helper1 !== '')) {
-          helper2 = {';': [], '\t': [], ',': [], '|': []};
+          helper2 = {
+            ';': [],
+            '\t': [],
+            ',': [],
+            '|': []
+          };
           helper2[0] = [';', '\t', ',', '|'];
           helper1 = helper1.split('\n');
           for (j = 0; j < helper2[0].length; j++) {
@@ -349,3 +355,17 @@ var micromarkdown = {
     return '';
   }
 };
+
+(function (root, factory) {
+  "use strict";
+  if (typeof define === 'function' && define.amd) {
+    define([], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory();
+  } else {
+    root.returnExports = factory();
+  }
+}(this, function () {
+  'use strict';
+  return micromarkdown;
+}));

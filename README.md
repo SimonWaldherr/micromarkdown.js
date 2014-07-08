@@ -6,10 +6,12 @@ take a look at the to PHP translated version: https://github.com/SimonWaldherr/m
 ##about
 
 License:   MIT  
-Version: 0.2.0  
-Date:  01.2014  
+Version: 0.3.0  
+Date:  08.2014  
 
 ##howto
+
+###browser
 
 ```html
 <script type="text/javascript" src="http://simonwaldherr.github.io/micromarkdown.js/dist/micromarkdown.min.js"></script>
@@ -20,6 +22,14 @@ var input = document.getElementById('input').value,
     outputEle = document.getElementById('outEle');
 
 outputEle.innerHTML = micromarkdown.parse(input);
+```
+
+###node
+
+take a look at the ***nodemmd.js*** node example
+
+```sh
+node nodemmd.js
 ```
 
 ##demo
