@@ -1,28 +1,23 @@
 var mmd = require('./micromarkdown.js'),
-  colors = require('colors');
+  colors = require('colors'),
+  tests = [];
 
 console.log(mmd.parse('*foobar*\n**lorem** ***ipsum***\n\n* this\n* is a\n* list\n'));
 
-if (mmd.parse('#Header1').trim() === '<h1>Header1</h1>') {
-  console.log('* header 1'.green);
-} else {
-  console.log('* header 1'.red);
-}
+tests = [
+  {'name': 'header 1', 'input': '#Header1', 'output': '<h1>Header1</h1>'},
+  {'name': 'header 2', 'input': '##Header2', 'output': '<h2>Header2</h2>'},
+  {'name': 'header 3', 'input': '###Header3', 'output': '<h3>Header3</h3>'},
+  {'name': 'link 1', 'input': '[SimonWaldherr](http://simon.waldherr.eu/)', 'output': '<a href="http://simon.waldherr.eu/">SimonWaldherr</a>'},
+  {'name': 'link 2', 'input': '[SimonWaldherr][1]\n[1]: http://simon.waldherr.eu/', 'output': '<a href="http://simon.waldherr.eu/">SimonWaldherr</a>'},
+  {'name': 'bold', 'input': '**bold** text', 'output': '<b>bold</b> text'},
+  {'name': 'italic', 'input': '*italic* test', 'output': '<i>italic</i> test'},
+  {'name': 'bold+italic', 'input': '*italic and **bold** text*', 'output': '<i>italic and <b>bold</b> text</i>'}];
 
-if (mmd.parse('##Header2').trim() === '<h2>Header2</h2>') {
-  console.log('* header 2'.green);
-} else {
-  console.log('* header 2'.red);
-}
-
-if (mmd.parse('###Header3').trim() === '<h3>Header3</h3>') {
-  console.log('* header 3'.green);
-} else {
-  console.log('* header 3'.red);
-}
-
-if (mmd.parse('[SimonWaldherr](http://simon.waldherr.eu/)', true).trim() === '<a href="http://simon.waldherr.eu/">SimonWaldherr</a>') {
-  console.log('* link 1'.green);
-} else {
-  console.log('* link 1'.red);
+for(i in tests) {
+  if(mmd.parse(tests[i].input, true).trim() === tests[i].output) {
+    console.log(tests[i].name.green);
+  } else {
+    console.log(tests[i].name.red);
+  }
 }
