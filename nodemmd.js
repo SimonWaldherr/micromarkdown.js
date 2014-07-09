@@ -12,7 +12,11 @@ tests = [
   {'name': 'link 2', 'input': '[SimonWaldherr][1]\n[1]: http://simon.waldherr.eu/', 'output': '<a href="http://simon.waldherr.eu/">SimonWaldherr</a>'},
   {'name': 'bold', 'input': '**bold** text', 'output': '<b>bold</b> text'},
   {'name': 'italic', 'input': '*italic* test', 'output': '<i>italic</i> test'},
-  {'name': 'bold+italic', 'input': '*italic and **bold** text*', 'output': '<i>italic and <b>bold</b> text</i>'}];
+  {'name': 'bold+italic', 'input': '*italic and **bold** text*', 'output': '<i>italic and <b>bold</b> text</i>'},
+  {'name': 'ordered list', 'input': '1. this\n2. is a\n3. list', 'output': '<ol><li>this</li>\n<li>is a</li>\n<li>list</li>\n</ol>'},
+  {'name': 'unordered list', 'input': '* this\n* is a\n* list', 'output': '<ul><li>this</li>\n<li>is a</li>\n<li>list</li>\n</ul>'},
+  {'name': 'nested list', 'input': '* this\n* is a\n  1. test\n  1. and\n  1. demo\n* list', 'output': '<ul><li>this</li>\n<li>is a</li>\n<ol><li>test</li>\n<li>and</li>\n<li>demo</li>\n</ol><li>list</li>\n</ul>'},
+  {'name': 'table', 'input': 'this | is a   | table  \n-----|--------|--------\nwith | sample | content\nlorem| ipsum  | dolor  \nsit  | amet   | sed    \ndo   | eiusom | tempor ', 'output': '<table><tr><th>this</th><th>is a</th><th>table</th></tr><tr><td>with</td><td>sample</td><td>content</td></tr>\n<tr><td>lorem</td><td>ipsum</td><td>dolor</td></tr>\n<tr><td>sit</td><td>amet</td><td>sed</td></tr>\n<tr><td>do</td><td>eiusom</td><td>tempor</td></tr>\n</table>'}];
 
 for(i in tests) {
   if(mmd.parse(tests[i].input, true).trim() === tests[i].output) {
