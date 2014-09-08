@@ -1,5 +1,9 @@
 #![micromarkdown.js](http://simonwaldherr.de/umd.png)
 
+[![Build Status](https://travis-ci.org/SimonWaldherr/micromarkdown.js.svg?branch=master)](https://travis-ci.org/SimonWaldherr/micromarkdown.js)
+[![Gittip donate button](http://img.shields.io/gittip/bevry.png)](https://www.gittip.com/SimonWaldherr/ "Donate weekly to this project using Gittip")
+[![Flattr donate button](https://raw.github.com/balupton/flattr-buttons/master/badge-89x18.gif)](https://flattr.com/submit/auto?user_id=SimonWaldherr&url=http%3A%2F%2Fgithub.com%2FSimonWaldherr%2Fmicromarkdown.js "Donate monthly to this project using Flattr")
+
 convert [markdown](http://en.wikipedia.org/wiki/Markdown) to [HTML](http://en.wikipedia.org/wiki/HTML) in under 5kb  
 take a look at the to PHP translated version: https://github.com/SimonWaldherr/micromarkdown.php
 
