@@ -9,6 +9,7 @@
     "email": "contact@simonwaldherr.de",
     "url": "http://simon.waldherr.eu/"
   },
+  "main": "micromarkdown.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/SimonWaldherr/micromarkdown.js.git"
