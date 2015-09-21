@@ -10,8 +10,8 @@ take a look at the to PHP translated version: https://github.com/SimonWaldherr/m
 ##about
 
 License:   MIT  
-Version: 0.3.1  
-Date:  06.2015  
+Version: 0.3.3  
+Date:  09.2015  
 
 ##howto
 

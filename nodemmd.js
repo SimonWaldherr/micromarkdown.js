@@ -10,6 +10,7 @@ tests = [
   {'name': 'header 3', 'input': '###Header3', 'output': '<h3>Header3</h3>'},
   {'name': 'link 1', 'input': '[SimonWaldherr](http://simon.waldherr.eu/)', 'output': '<a href="http://simon.waldherr.eu/">SimonWaldherr</a>'},
   {'name': 'link 2', 'input': '[SimonWaldherr][1]\n[1]: http://simon.waldherr.eu/', 'output': '<a href="http://simon.waldherr.eu/">SimonWaldherr</a>'},
+  {'name': 'link 3', 'input': '[foobar $& example](http://google.de)', 'output': '<a href="http://google.de">foobar &#x0024&amp; example</a>'},
   {'name': 'bold', 'input': '**bold** text', 'output': '<b>bold</b> text'},
   {'name': 'italic', 'input': '*italic* test', 'output': '<i>italic</i> test'},
   {'name': 'bold+italic', 'input': '*italic and **bold** text*', 'output': '<i>italic and <b>bold</b> text</i>'},
