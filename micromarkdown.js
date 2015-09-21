@@ -27,7 +27,8 @@ var micromarkdown = {
     mail: /<(([a-z0-9_\-\.])+\@([a-z0-9_\-\.])+\.([a-z]{2,7}))>/gmi,
     tables: /\n(([^|\n]+ *\| *)+([^|\n]+\n))((:?\-+:?\|)+(:?\-+:?)*\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
     include: /[\[<]include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)[\]>]/gi,
-    url: /<([a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[\-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)>/g
+    url: /<([a-zA-Z0-9@:%_\+.~#?&\/=]{2,256}\.[a-z]{2,4}\b(\/[\-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)>/g,
+    url2: /[ \t\n]([a-zA-Z]{2,16}:\/\/[a-zA-Z0-9@:%_\+.~#?&=]{2,256}.[a-z]{2,4}\b(\/[\-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)[ \t\n]/g
   },
   parse: function (str, strict) {
     'use strict';
@@ -225,6 +226,10 @@ var micromarkdown = {
       }
       str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(repstr, strict) + 'href="' + repstr + '">' + stra[1] + '</a>');
     }
+    while ((stra = micromarkdown.regexobject.url2.exec(str)) !== null) {
+      repstr = stra[1];
+      str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(repstr, strict) + 'href="' + repstr + '">' + repstr + '</a>');
+    }
 
     /* horizontal line */
     while ((stra = micromarkdown.regexobject.hr.exec(str)) !== null) {
@@ -292,6 +297,7 @@ var micromarkdown = {
     }
 
     str = str.replace(/ {2,}[\n]{1,}/gmi, '<br/><br/>');
+
     return str;
   },
   ajax: function (str) {
