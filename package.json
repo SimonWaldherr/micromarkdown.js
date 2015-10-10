@@ -2,7 +2,7 @@
   "name": "micromarkdown",
   "title": "micromarkdown.js",
   "description": "converts markdown to html",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "homepage": "https://github.com/SimonWaldherr/micromarkdown.js",
   "author": {
     "name": "Simon Waldherr",
@@ -33,6 +33,7 @@
     "colors": ">= 0.6.1"
   },
   "keywords": [
+    "micromarkdown",
     "markdown",
     "gfm",
     "md",

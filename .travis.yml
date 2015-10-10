@@ -1,7 +1,11 @@
 language: node_js
-
 node_js:
-  - "0.11"
-  - "0.10"
-  - "node"
-  - "iojs"
+- '0.11'
+- '0.10'
+- node
+- iojs
+deploy:
+  api_key:
+    secure: hNQ/4jKJURm38ul2ov+GDmpQ/1maYq/JFjzBnhyFD3KM0NaL8cqF4jAGRsJZz8NKPrbS19Xv/o+UsKdZNWVUT+h1TAPeaaHOKQd73wJtBNCvMrbCF8RGIfxx7GN76m4Z4kS7TRPVR9cXzITLrNjWsXW1gXGTF7J84VZvt1ivIaY=
+  email: npm@simon.waldherr.eu
+  provider: npm

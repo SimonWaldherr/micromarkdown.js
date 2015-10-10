@@ -1,4 +1,4 @@
-var mmd = require('./micromarkdown.js'),
+var mmd = require('micromarkdown'),
   colors = require('colors'),
   tests = [];
 
