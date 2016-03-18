@@ -15,19 +15,20 @@
       tests = document.getElementsByTagName('code');
       for (i = 0; i < tests.length; i++) {
         input = tests[i].innerHTML.split('<!--')[1].split('-->')[0].split('|||');
+        console.log( input );
         if (tests[i].id.indexOf('gfm') !== -1) {
-          if (micromarkdown.parse(input[0], false).toString().trim() === input[1].toString().trim()) {
+          if (micromarkdown.parse(input[0].replace(/^\s+|\s+$/g, ''), false).toString().trim() === input[1].toString().trim()) {
             returnstr += '<li style="color: green;">' + tests[i].id + '</li>';
           } else {
             returnstr += '<li style="color: red;">' + tests[i].id + '</li>';
-            console.log({"is": [micromarkdown.parse(input[0], false).toString().trim()], "should": [input[1].toString().trim()]});
+            console.log({"is": [micromarkdown.parse(input[0].replace(/^\s+|\s+$/g, ''), false).toString().trim()], "should": [input[1].toString().trim()]});
           }
         } else {
-          if (micromarkdown.parse(input[0], true).toString().trim() === input[1].toString().trim()) {
+          if (micromarkdown.parse(input[0].replace(/^\s+|\s+$/g, ''), true).toString().trim() === input[1].toString().trim()) {
             returnstr += '<li style="color: green;">' + tests[i].id + '</li>';
           } else {
             returnstr += '<li style="color: red;">' + tests[i].id + '</li>';
-            console.log({"is": [micromarkdown.parse(input[0], true).toString().trim()], "should": [input[1].toString().trim()]});
+            console.log({"is": [micromarkdown.parse(input[0].replace(/^\s+|\s+$/g, ''), true).toString().trim()], "should": [input[1].toString().trim()]});
           }
         }
       }
