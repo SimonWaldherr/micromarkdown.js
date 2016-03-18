@@ -50,14 +50,14 @@ var micromarkdown = {
     /* code */
     while ((stra = micromarkdown.regexobject.code.exec(str)) !== null) {
       crc32str = micromarkdown.crc32(stra[0]);
-      micromarkdown.codeblocks[crc32str] = '<code>\n' + micromarkdown.htmlEncode(stra[1]).replace(/\n/gm, '<br/>').replace(/\ /gm, '&nbsp;') + '</code>\n';
+      micromarkdown.codeblocks[crc32str] = '<code>\n' + micromarkdown.htmlEncode(stra[1]).replace(/\n/gm, '<br/>').replace(/\ /gm, '&nbsp;') + '</code>';
       str = str.replace(stra[0], ' §§§' + crc32str + '§§§ '); 
     }
 
     /* headlines */
     while ((stra = micromarkdown.regexobject.headline.exec(str)) !== null) {
       count = stra[1].length;
-      str = str.replace(stra[0], '<h' + count + '>' + stra[2] + '</h' + count + '>' + '\n');
+      str = str.replace(stra[0], '<h' + count + '>' + stra[2].trim() + '</h' + count + '>').trim();
     }
 
     /* lists */
@@ -187,9 +187,9 @@ var micromarkdown = {
     /* links */
     while ((stra = micromarkdown.regexobject.links.exec(str)) !== null) {
       if (stra[0].substr(0, 1) === '!') {
-        str = str.replace(stra[0], '<img src="' + stra[2] + '" alt="' + stra[1] + '" title="' + stra[1] + '" />\n');
+        str = str.replace(stra[0], '<img src="' + stra[2] + '" alt="' + stra[1] + '" title="' + stra[1] + '" />');
       } else {
-        str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(stra[2], strict) + 'href="' + stra[2] + '">' + stra[1] + '</a>\n');
+        str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(stra[2], strict) + 'href="' + stra[2] + '">' + stra[1] + '</a>');
       }
     }
     while ((stra = micromarkdown.regexobject.mail.exec(str)) !== null) {
@@ -205,7 +205,7 @@ var micromarkdown = {
     while ((stra = micromarkdown.regexobject.reflinks.exec(str)) !== null) {
       helper1 = new RegExp('\\[' + stra[2] + '\\]: ?([^ \n]+)', "gi");
       if ((helper = helper1.exec(str)) !== null) {
-        str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(helper[1], strict) + 'href="' + helper[1] + '">' + stra[1] + '</a>');
+        str = str.replace(stra[0], '<a ' + micromarkdown.mmdCSSclass(helper[1], strict) + 'href="' + helper[1] + '">' + stra[1] + '</a>').replace(/^\s+|\s+$/g, '');
         trashgc.push(helper[0]);
       }
     }

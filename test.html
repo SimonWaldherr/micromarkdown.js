@@ -15,7 +15,6 @@
       tests = document.getElementsByTagName('code');
       for (i = 0; i < tests.length; i++) {
         input = tests[i].innerHTML.split('<!--')[1].split('-->')[0].split('|||');
-        console.log( input );
         if (tests[i].id.indexOf('gfm') !== -1) {
           if (micromarkdown.parse(input[0].replace(/^\s+|\s+$/g, ''), false).toString().trim() === input[1].toString().trim()) {
             returnstr += '<li style="color: green;">' + tests[i].id + '</li>';
