@@ -115,7 +115,7 @@ var micromarkdown = {
 
     /* tables */
     while ((stra = micromarkdown.regexobject.tables.exec(str)) !== null) {
-      repstr = '<table><tr>';
+      repstr = '<table>';
       helper = stra[1].split('|');
       calign = stra[4].split('|');
       for (i = 0; i < helper.length; i++) {
@@ -137,11 +137,13 @@ var micromarkdown = {
           calign[i] = 0;
         }
       }
+
+      repstr += "<thead><tr>"
       cel = ['<th>', '<th align="left">', '<th align="right">', '<th align="center">'];
       for (i = 0; i < helper.length; i++) {
         repstr += cel[calign[i]] + helper[i].trim() + '</th>';
       }
-      repstr += '</tr>';
+      repstr += '</tr></thead><tbody>';
       cel = ['<td>', '<td align="left">', '<td align="right">', '<td align="center">'];
       helper1 = stra[7].split('\n');
       for (i = 0; i < helper1.length; i++) {
@@ -157,7 +159,7 @@ var micromarkdown = {
           repstr += '</tr>' + '\n';
         }
       }
-      repstr += '</table>';
+      repstr += '</tbody></table>';
       str = str.replace(stra[0], repstr);
     }
 
