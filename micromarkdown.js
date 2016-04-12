@@ -25,7 +25,7 @@ var micromarkdown = {
     reflinks: /\[([^\]]+)\]\[([^\]]+)\]/g,
     smlinks: /\@([a-z0-9]{3,})\@(t|gh|fb|gp|adn)/gi,
     mail: /<(([a-z0-9_\-\.])+\@([a-z0-9_\-\.])+\.([a-z]{2,7}))>/gmi,
-    tables: /\n(([^|\n]+ *\| *)+([^|\n]+\n))((:?\-+:?\|)+(:?\-+:?)*\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
+    tables: /\n(([^|\n]+ *\| *)+([^|\n]+\n))([\t ]*(:?\-+:?\|)+(:?\-+:?)*\n)((([^|\n]+ *\| *)+([^|\n]+)\n)+)/g,
     include: /[\[<]include (\S+) from (https?:\/\/[a-z0-9\.\-]+\.[a-z]{2,9}[a-z0-9\.\-\?\&\/]+)[\]>]/gi,
     url: /<([a-zA-Z0-9@:%_\+.~#?&\/=]{2,256}\.[a-z]{2,4}\b(\/[\-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)>/g,
     url2: /[ \t\n]([a-zA-Z]{2,16}:\/\/[a-zA-Z0-9@:%_\+.~#?&=]{2,256}.[a-z]{2,4}\b(\/[\-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)[ \t\n]/g
@@ -51,7 +51,7 @@ var micromarkdown = {
     while ((stra = micromarkdown.regexobject.code.exec(str)) !== null) {
       crc32str = micromarkdown.crc32(stra[0]);
       micromarkdown.codeblocks[crc32str] = '<code>\n' + micromarkdown.htmlEncode(stra[1]).replace(/\n/gm, '<br/>').replace(/\ /gm, '&nbsp;') + '</code>';
-      str = str.replace(stra[0], ' §§§' + crc32str + '§§§ '); 
+      str = str.replace(stra[0], ' §§§' + crc32str + '§§§ ');
     }
 
     /* headlines */
@@ -306,9 +306,9 @@ var micromarkdown = {
 
     str = str.replace(/[\n]{2,}/gmi, '<br/><br/>');
 
-    for(var index in micromarkdown.codeblocks) { 
+    for(var index in micromarkdown.codeblocks) {
       if(micromarkdown.codeblocks.hasOwnProperty(index)) {
-        str = str.replace('§§§' + index + '§§§', micromarkdown.codeblocks[index]); 
+        str = str.replace('§§§' + index + '§§§', micromarkdown.codeblocks[index]);
       }
     }
     str = str.replace('&#x0024&amp;', '$&');
