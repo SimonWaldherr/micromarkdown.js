@@ -143,34 +143,34 @@
 </code>
 <code id="test_table">
 <!--
-this | is a   | table  
+this | is a   | table
 -----|--------|--------
 with | sample | content
-lorem| ipsum  | dolor  
-sit  | amet   | sed    
-do   | eiusom | tempor 
+lorem| ipsum  | dolor
+sit  | amet   | sed
+do   | eiusom | tempor
 |||
-<table><tr><th>this</th><th>is a</th><th>table</th></tr><tr><td>with</td><td>sample</td><td>content</td></tr>
+<table><thead><tr><th>this</th><th>is a</th><th>table</th></tr></thead><tbody><tr><td>with</td><td>sample</td><td>content</td></tr>
 <tr><td>lorem</td><td>ipsum</td><td>dolor</td></tr>
 <tr><td>sit</td><td>amet</td><td>sed</td></tr>
 <tr><td>do</td><td>eiusom</td><td>tempor</td></tr>
-</table>
+</tbody></table>
 -->
 </code>
 <code id="test_gfmtable">
 <!--
-this  | is a     | test    | table 
+this  | is a     | test    | table
 -----:|:--------:|:--------|-------
 with  |   sample | content | lorem
 lorem |   ipsum  | dolor   | ipsum
 sit   |   amet   | sed     | dolor
 do    |   eiusom | tempor  | sit a
 |||
-<table><tr><th align="right">this</th><th align="center">is a</th><th align="left">test</th><th>table</th></tr><tr><td align="right">with</td><td align="center">sample</td><td align="left">content</td><td>lorem</td></tr>
+<table><thead><tr><th align="right">this</th><th align="center">is a</th><th align="left">test</th><th>table</th></tr></thead><tbody><tr><td align="right">with</td><td align="center">sample</td><td align="left">content</td><td>lorem</td></tr>
 <tr><td align="right">lorem</td><td align="center">ipsum</td><td align="left">dolor</td><td>ipsum</td></tr>
 <tr><td align="right">sit</td><td align="center">amet</td><td align="left">sed</td><td>dolor</td></tr>
 <tr><td align="right">do</td><td align="center">eiusom</td><td align="left">tempor</td><td>sit a</td></tr>
-</table>
+</tbody></table>
 -->
 </code>
 <code id="test_code">
@@ -186,7 +186,7 @@ var&nbsp;md&nbsp;&nbsp;&nbsp;=&nbsp;document.getElementById("md").value,<br/>&nb
 </code>
 </div>
 <div class="result" id="result">
-  
+
 </div>
 <script type="text/javascript">
   var _gaq = _gaq || [];
