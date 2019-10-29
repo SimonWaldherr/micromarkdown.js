@@ -1,4 +1,4 @@
-# ![micromarkdown.js](http://simonwaldherr.de/umd.png)
+# ![micromarkdown.js](https://simonwaldherr.de/umd.png)
 
 [![Build Status](https://travis-ci.org/SimonWaldherr/micromarkdown.js.svg?branch=master)](https://travis-ci.org/SimonWaldherr/micromarkdown.js)
 [![Flattr donate button](https://raw.github.com/balupton/flattr-buttons/master/badge-89x18.gif)](https://flattr.com/submit/auto?user_id=SimonWaldherr&url=http%3A%2F%2Fgithub.com%2FSimonWaldherr%2Fmicromarkdown.js "Donate monthly to this project using Flattr")
@@ -9,8 +9,8 @@ take a look at the to PHP translated version: https://github.com/SimonWaldherr/m
 ## about
 
 License:   MIT  
-Version: 0.3.4  
-Date:  10.2015  
+Version: 0.3.5  
+Date:  10.2019  
 
 ## howto
 
@@ -53,4 +53,4 @@ There is also a [Testpage](http://simonwaldherr.github.io/micromarkdown.js/test.
 
 ## contact
 
-Feel free to contact me via [eMail](mailto:contact@simonwaldherr.de) or on [Twitter](http://twitter.com/simonwaldherr). This software will be continually developed. Suggestions and tips are always welcome.
+Feel free to contact me via [eMail](mailto:contact@simonwaldherr.de) or on [Twitter](http://twitter.com/simonwaldherr). Pull Requests are always welcome.
