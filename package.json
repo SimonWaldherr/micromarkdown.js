@@ -30,7 +30,7 @@
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-uglify": ">= 0.2.2",
     "grunt-compare-size": ">= 0.0.0",
-    "colors": ">= 0.6.1"
+    "colors": "1.4.0"
   },
   "keywords": [
     "micromarkdown",
