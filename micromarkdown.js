@@ -20,7 +20,7 @@ var micromarkdown = {
     code: /\s\`\`\`\n?([^`]+)\`\`\`/g,
     hr: /^(?:([\*\-_] ?)+)\1\1$/gm,
     lists: /^((\s*((\*|\-)|\d(\.|\))) [^\n]+)\n)+/gm,
-    bolditalic: /(?:([\*_~]{1,3}))([^\*_~\n]+[^\*_~\s])\1/g,
+    bolditalic: /(?:([\*_~`]{1,3}))([^\*_~`\n]+[^\*_~`\s])\1/g,
     links: /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
     reflinks: /\[([^\]]+)\]\[([^\]]+)\]/g,
     smlinks: /\@([a-z0-9]{3,})\@(t|gh|fb|gp|adn)/gi,
@@ -166,23 +166,28 @@ var micromarkdown = {
     /* bold and italic */
     for (i = 0; i < 3; i++) {
       while ((stra = micromarkdown.regexobject.bolditalic.exec(str)) !== null) {
-        repstr = [];
-        if (stra[1] === '~~') {
-          str = str.replace(stra[0], '<del>' + stra[2] + '</del>');
-        } else {
-          switch (stra[1].length) {
-          case 1:
-            repstr = ['<i>', '</i>'];
-            break;
-          case 2:
-            repstr = ['<b>', '</b>'];
-            break;
-          case 3:
-            repstr = ['<i><b>', '</b></i>'];
-            break;
-          }
-          str = str.replace(stra[0], repstr[0] + stra[2] + repstr[1]);
+        repstr = []
+        switch (stra[1]) {
+        case '~~':
+          repstr = ['<del>', '</del>']
+          break
+        case '*':
+        case '_':
+          repstr = ['<i>', '</i>']
+          break
+        case '**':
+        case '__':
+          repstr = ['<strong>', '</strong>']
+          break
+        case '***':
+        case '___':
+          repstr = ['<i><strong>', '</strong></i>']
+          break
+        case '`':
+          repstr = ['<code>', '</code>']
+          break
         }
+        str = str.replace(stra[0], repstr[0] + stra[2] + repstr[1]);
       }
     }
 
